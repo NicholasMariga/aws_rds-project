@@ -16,7 +16,7 @@ ln -s /opt/flyway-10.11.0/flyway /usr/local/bin/flyway
 
 # -------- CLONE YOUR GITHUB APP --------
 cd /home/ec2-user
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_APP_REPO>.git app
+git clone https://github.com/NicholasMariga/aws_rds-project.git app
 cd app
 
 # -------- CREATE APP ENV FILE --------
@@ -30,11 +30,11 @@ PORT=3000
 EOF
 
 # -------- FLYWAY CONFIG --------
-mkdir -p migrations/conf
 cat <<EOF > migrations/conf/flyway.conf
 flyway.url=jdbc:mysql://${db_host}:3306/app_db
 flyway.user=admin
 flyway.password=${db_password}
+flyway.locations=filesystem:${PWD}/migrations/sql
 EOF
 
 # -------- RUN FLYWAY MIGRATIONS --------
