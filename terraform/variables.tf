@@ -45,7 +45,7 @@ variable "instance_type_bastion" {
 variable "bastion_ami" {
   description = "AMI for bastion (Amazon Linux 2 recommended)"
   type        = string
-  default     = "ami-0c02fb55956c7d316"
+  default     = "ami-0fa3fe0fa7920f68e"
 }
 
 variable "key_name" {

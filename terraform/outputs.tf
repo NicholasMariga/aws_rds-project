@@ -13,3 +13,7 @@ output "rds_username" {
   value = var.db_username
 }
 
+output "ssh_command" {
+  value = "ssh -i ~/.ssh/terraformkey ec2-user@${aws_instance.bastion.public_ip}"
+
+}

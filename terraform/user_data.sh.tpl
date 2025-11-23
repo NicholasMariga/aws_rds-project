@@ -2,17 +2,18 @@
 set -e
 
 # -------- SYSTEM UPDATE --------
-yum update -y
+sudo yum update -y
 
 # -------- INSTALL NODEJS --------
-curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
-yum install -y nodejs git mysql
+sudo curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
+sudo yum install -y nodejs git mariadb105
+
 
 # -------- INSTALL FLYWAY --------
 cd /opt
-wget -qO flyway.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz
-tar -xzf flyway.tar.gz
-ln -s /opt/flyway-10.11.0/flyway /usr/local/bin/flyway
+sudo wget -qO flyway.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz
+sudo tar -xzf flyway.tar.gz
+sudo ln -s /opt/flyway-10.11.0/flyway /usr/local/bin/flyway
 
 # -------- CLONE YOUR GITHUB APP --------
 cd /home/ec2-user
@@ -34,19 +35,19 @@ cat <<EOF > migrations/conf/flyway.conf
 flyway.url=jdbc:mysql://${db_host}:3306/app_db
 flyway.user=admin
 flyway.password=${db_password}
-flyway.locations=filesystem:${PWD}/migrations/sql
+flyway.locations=filesystem:/home/ec2-user/app/migrations/sql
 EOF
 
 # -------- RUN FLYWAY MIGRATIONS --------
-flyway -configFiles=migrations/conf/flyway.conf migrate
+sudo /opt/flyway-10.11.0/flyway -configFiles=/conf/flyway.conf migrate
 
 # -------- INSTALL NODE APP DEPENDENCIES --------
 cd app
-npm install
+sudo npm install
 
 # -------- INSTALL & RUN PM2 (Node process manager) --------
-npm install -g pm2
-pm2 start server.js
-pm2 save
+sudo npm install -g pm2
+sudo pm2 start server.js
+sudo pm2 save
 
-pm2 startup systemd -u ec2-user --hp /home/ec2-user
+sudo pm2 startup systemd -u ec2-user --hp /home/ec2-user
