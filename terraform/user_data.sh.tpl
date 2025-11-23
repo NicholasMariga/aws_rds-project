@@ -39,7 +39,7 @@ flyway.locations=filesystem:/home/ec2-user/app/migrations/sql
 EOF
 
 # -------- RUN FLYWAY MIGRATIONS --------
-sudo /opt/flyway-10.11.0/flyway -configFiles=/conf/flyway.conf migrate
+sudo /opt/flyway-10.11.0/flyway -configFiles=/home/ec2-user/app/migrations/conf/flyway.conf migrate
 
 # -------- INSTALL NODE APP DEPENDENCIES --------
 cd app
